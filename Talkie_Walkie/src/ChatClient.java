@@ -13,6 +13,21 @@ public class ChatClient {
         BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         BufferedReader userInput = new BufferedReader(new InputStreamReader(System.in));
 
+        // Écouter les messages entrants dans un nouveau thread
+        Thread messageListener = new Thread(() -> {
+            try {
+                String serverResponse;
+                while ((serverResponse = in.readLine()) != null) {
+                    System.out.println("");
+                    System.out.println(serverResponse);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+
+        messageListener.start();
+
         String input;
         while (true) {
             System.out.print("Entrez un message: ");
@@ -22,8 +37,6 @@ public class ChatClient {
             }
 
             out.println(input);
-            String serverResponse = in.readLine();
-            System.out.println("Serveur: " + serverResponse);
         }
 
         userInput.close();
