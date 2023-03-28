@@ -7,14 +7,15 @@ public class ChatServer {
     private static List<ClientHandler> clients = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
-        ServerSocket serverSocket = new ServerSocket(PORT);
-        System.out.println("Chat Server démarré sur le port: " + PORT);
+        try (ServerSocket serverSocket = new ServerSocket(PORT)) {
+            System.out.println("Chat Server démarré sur le port: " + PORT);
 
-        while (true) {
-            Socket clientSocket = serverSocket.accept();
-            ClientHandler client = new ClientHandler(clientSocket);
-            clients.add(client);
-            new Thread(client).start();
+            while (true) {
+                Socket clientSocket = serverSocket.accept();
+                ClientHandler client = new ClientHandler(clientSocket);
+                clients.add(client);
+                new Thread(client).start();
+            }
         }
     }
 
