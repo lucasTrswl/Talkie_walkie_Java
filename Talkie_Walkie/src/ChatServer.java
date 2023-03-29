@@ -48,7 +48,7 @@ class ClientHandler implements Runnable {
         String message;
         try {
             while ((message = in.readLine()) != null) {
-                System.out.println("Message reçu: " + message);
+                System.out.println("Message de " + message);
                 ChatServer.broadcast(message, this);
             }
         } catch (IOException e) {
